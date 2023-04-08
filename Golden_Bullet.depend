@@ -1,0 +1,62 @@
+# depslib dependency file v1.0
+1680865251 source:e:\gameee\golden_bullet\main.cpp
+	<SDL.h>
+	"Game.h"
+
+1680880286 e:\gameee\golden_bullet\include\game.h
+	"SDL.h"
+	<vector>
+	"Texture.h"
+	"Object.h"
+	<SDL_ttf.h>
+
+1680570485 e:\gameee\golden_bullet\include\texture.h
+	<SDL.h>
+	<SDL_image.h>
+	<string>
+	<iostream>
+	<stdio.h>
+	<map>
+
+1680749165 source:e:\gameee\golden_bullet\src\texture.cpp
+	"Texture.h"
+	<SDL_image.h>
+	<string>
+
+1680736548 source:e:\gameee\golden_bullet\src\button.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<stdio.h>
+	<string>
+
+1680736320 e:\gameee\golden_bullet\include\button.h
+	"Texture.h"
+
+1680883034 source:e:\gameee\golden_bullet\src\game.cpp
+	"Game.h"
+	<iostream>
+	<cstdlib>
+	<Object.h>
+	<string.h>
+
+1680870363 e:\gameee\golden_bullet\include\object.h
+	<string>
+	<iostream>
+	"Texture.h"
+
+1680870917 source:e:\gameee\golden_bullet\src\object.cpp
+	"Object.h"
+	"Game.h"
+	"Texture.h"
+	"SDL.h"
+	"cstdlib"
+
+1680827788 e:\gameee\golden_bullet\include\enemy.h
+	<string>
+	<iostream>
+	"Texture.h"
+	"Object.h"
+
+1680825971 source:e:\gameee\golden_bullet\src\enemy.cpp
+	"Enemy.h"
+
