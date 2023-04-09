@@ -5,9 +5,10 @@ Bạn là một lính đặc chủng mạnh mẽ, nhiệm vụ của bạn là t
 Bạn có một lượng máu cố định, tùy theo từng map, kẻ địch sẽ có lượng máu và dame khác nhau, hãy cố gắng kết thúc kẻ địch trước khi chúng bắn bạn.
 ## Cách chơi
 - Bạn sẽ sử dụng chuột để ngắm và bắn
-- Bấm R để nạp đạn
+- Bấm R để nạp đạn, T để dừng/phát nhạc
 ## Cách cài đặt
-- Cài đặt Codeblock từ 20.03 trở lên hoặc C++ IDE tương ứng
+- Cài đặt Codeblock từ 20.03 trở lên
 - Cài đặt các thư viện `SDL2`, `SDL2_image`, `SDL2_mixer` và `SDL2_ttf`
 # Tài liệu tham khảo
 - https://lazyfoo.net/tutorials/SDL/index.php#Hello%20SDL
+- https://www.myzony.com/usr/uploads/2016/02/4127789886.pdf
