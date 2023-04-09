@@ -6,7 +6,7 @@
 class Object
 {
     public:
-        Object(int _m_width, int _m_height, float _m_PosX, float _m_PosY,std::string _m_textureID,float _x,float _y, int _w, int _h, std::string _quaiID, std::string _qbID, std::string _qcID, int _dame)
+        Object(int _m_width, int _m_height, int _m_PosX, int _m_PosY,std::string _m_textureID,int _x,int _y, int _w, int _h, std::string _quaiID, std::string _qbID, std::string _qcID, int _dame)
         :enm{_m_PosX,_m_PosY,_m_width,_m_height}
         {   remain=0;
             time=SDL_GetTicks();

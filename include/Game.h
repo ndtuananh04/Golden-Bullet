@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Object.h"
 #include <SDL_ttf.h>
+#include <string.h>
+#include <SDL_mixer.h>
 class Game
 {
     public:
@@ -19,17 +21,20 @@ class Game
         bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
         SDL_Renderer* getRenderer(){return m_pRenderer;}
         void render();
-        SDL_Texture* str_to_texture(std::string str)//be careful
-        {
-        SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, str.c_str(), {255,255,0} );
-        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_pRenderer,textSurface);
-        SDL_FreeSurface(textSurface);
-        return textTexture;}
         void update();
         void handleEvents();
+        SDL_Texture* str_to_texture(std::string str);//be careful
         void clean();
         bool running(){ return m_bRunning;}
         void truhp(int x){hp-=x;}
+        void tangdiem(int sc){
+            score+=sc;
+            if(score>=200){status=3;}
+        }
+        void trudan(){
+            ammo-=1;
+            if(ammo==0){statusammo=0;}
+        }
     protected:
 
     private:
@@ -47,8 +52,10 @@ class Game
         TTF_Font* gFont;
         bool m_bRunning,ss=true;
         int status=1;
-        int hp=100;
-        std::string ab="static";
+        int tWidth, tHeight;
+        int hp=100, score=0, ammo=20, statusammo=1;
+        SDL_Rect hpp,scc,amm, st{900,390,200,75}, qu{900,490,200,75};
+        double timee;
 
 };
 typedef Game TheGame;

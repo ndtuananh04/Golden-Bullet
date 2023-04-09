@@ -5,7 +5,7 @@
 #include "cstdlib"
 void Object::update()
 {
-    if(SDL_GetTicks()-time>1000&&remain==0&&rand()%300==1){
+    if(SDL_GetTicks()-time>2000&&remain==0&&rand()%500==1){
         quai.x=x;
         quai.y=y;
         quai.w=w;
@@ -16,7 +16,7 @@ void Object::update()
     if(remain==2&&SDL_GetTicks()-timeb>500){
         remain=0;
     }
-    if(remain==1&&SDL_GetTicks()-time>3000){
+    if(remain==1&&SDL_GetTicks()-time>2000){
         remain=3;
         TheGame::Instance()->truhp(dame);
         time=SDL_GetTicks();
@@ -41,6 +41,7 @@ void Object::shooted(int m, int n)
         if(insideq==true&&insidet==false){
             timeb=SDL_GetTicks();
             remain=2;
+            TheGame::Instance()->tangdiem(5);
         }
     }
 
