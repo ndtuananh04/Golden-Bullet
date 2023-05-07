@@ -6,8 +6,8 @@
 class Object
 {
     public:
-        Object(int _m_width, int _m_height, int _m_PosX, int _m_PosY,std::string _m_textureID,int _x,int _y, int _w, int _h, std::string _quaiID, std::string _qbID, std::string _qcID, int _dame)
-        :enm{_m_PosX,_m_PosY,_m_width,_m_height}
+        Object(int _m_width, int _m_height, int _m_PosX, int _m_PosY,std::string _m_textureID, float _x, float _y, float _w, float _h, std::string _quaiID, std::string _qbID, std::string _qcID)
+        :wal{_m_PosX,_m_PosY,_m_width,_m_height}
         {   remain=0;
             time=SDL_GetTicks();
             x=_x;
@@ -18,18 +18,20 @@ class Object
             quaiID=_quaiID;
             qbID=_qbID;
             qcID=_qcID;
-            dame=_dame;
         }
-        virtual ~Object(){}
+        ~Object(){}
         void update();
         void check(int m, int n);
         void render();
         void shooted(int m, int n);
+        void setqstatus(int r){
+            remain=r;
+        }
     private:
-        float x,y;
+        float x,y,w,h;
         int remain;
-        int w,h,dame;
-        SDL_Rect enm,quai;
+        int qhp;
+        SDL_Rect wal,quai;
         double time,timeb;
         float att;
         std::string m_textureID, quaiID, qbID, qcID;

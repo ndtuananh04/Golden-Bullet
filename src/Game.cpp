@@ -8,7 +8,7 @@
 Game* Game::m_pGame = 0;
 
  SDL_Texture* Game::str_to_texture(std::string str){
- SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, str.c_str(), {0,0,0} );
+ SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, str.c_str(), {255,215,0} );
  SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_pRenderer,textSurface);
  tWidth=textSurface->w;
  tHeight =textSurface->h;
@@ -56,8 +56,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
         mfail = Mix_LoadMUS("assets/fail.mp3");
         Mix_PlayMusic( mmusic, 2 );
         mshot = Mix_LoadWAV("assets/shot.wav");
-        mreload = Mix_LoadWAV("assets/reload.wav");
+        mreload = Mix_LoadWAV("assets/reload.mp3");
     TheTexture::Instance()->load("Assets/bg.png","01",m_pRenderer);
+    TheTexture::Instance()->load("Assets/levelchoose.png","02",m_pRenderer);
+    TheTexture::Instance()->load("Assets/bang.png","80",m_pRenderer);
     TheTexture::Instance()->load("Assets/complete.png","99",m_pRenderer);
     TheTexture::Instance()->load("Assets/failed.png","98",m_pRenderer);
     TheTexture::Instance()->load("Assets/stagecom.png","97",m_pRenderer);
@@ -89,21 +91,21 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     TheTexture::Instance()->load("Assets/22.png","22",m_pRenderer);
     TheTexture::Instance()->load("Assets/23.png","23",m_pRenderer);
 
-    wall1 = new Object(200,200,-26,320,"11",175,340,65,130,"31","32","33",10);
-    wall2 = new Object(380,278,472,174,"12",414,215,53,106,"31","32","33",10);
-    wall3 = new Object(291,193,979,326,"13",909,346,65,130,"31","32","33",10);
-    wall4 = new Object(203,204,1040,520,"14",1050,370,122,244,"31","32","33",10);
+    wall1 = new Object(200,200,-26,320,"11",175,340,65,130,"31","32","33");
+    wall2 = new Object(380,278,472,174,"12",414,215,53,106,"31","32","33");
+    wall3 = new Object(291,193,979,326,"13",909,346,65,130,"31","32","33");
+    wall4 = new Object(203,204,1040,520,"14",1050,370,122,244,"31","32","33");
 
-    wall5 = new Object(100,190,140,433,"15",90,395,95,190,"31","32","33",10);
-    wall6 = new Object(32,17,467,284,"16",470,245,28,56,"31","32","33",10);
-    wall7 = new Object(103,142,662,206,"17",635,244,42,84,"31","32","33",10);
-    wall8 = new Object(24,122,869,326,"18",888,330,45,90,"31","32","33",10);
-    wall9 = new Object(20,80,1167,235,"19",1140,237,38,76,"31","32","33",10);
+    wall5 = new Object(100,190,140,433,"15",90,395,95,190,"31","32","33");
+    wall6 = new Object(32,17,467,284,"16",470,245,28,56,"31","32","33");
+    wall7 = new Object(103,142,662,206,"17",635,244,42,84,"31","32","33");
+    wall8 = new Object(24,122,869,326,"18",888,330,45,90,"31","32","33");
+    wall9 = new Object(20,80,1167,235,"19",1140,237,38,76,"31","32","33");
 
-    wall10 = new Object(47,19,348,156,"20",362,113,27,54,"31","32","33",10);
-    wall11 = new Object(86,60,313,565,"21",324,480,68,136,"31","32","33",10);
-    wall12 = new Object(30,41,682,549,"22",692,490,48,96,"31","32","33",10);
-    wall13 = new Object(124,150,1156,570,"23",1129,447,126,252,"31","32","33",10);
+    wall10 = new Object(47,19,348,156,"20",362,113,27,54,"31","32","33");
+    wall11 = new Object(86,60,313,565,"21",324,480,68,136,"31","32","33");
+    wall12 = new Object(30,41,682,549,"22",692,490,48,96,"31","32","33");
+    wall13 = new Object(124,150,1156,570,"23",1129,447,126,252,"31","32","33");
 
     std::cout << "init success\n";
     return true;
@@ -155,8 +157,10 @@ void Game::update()
         tam.w=40;
         tam.h=40;
     }
-
-    if(statusammo==2&&SDL_GetTicks()-timee>2000){
+    if(ss==false&&SDL_GetTicks()-initban>150){
+        ss=true;
+    }
+    if(statusammo==2&&SDL_GetTicks()-timee>1000){
             if(totalammo>=0){
                 totalammo-=(20-ammo);
             }
@@ -169,7 +173,6 @@ void Game::update()
 
 void Game::render()
 {
-
     if(status==1){ //start
         SDL_RenderClear(m_pRenderer);
         SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
@@ -182,6 +185,7 @@ void Game::render()
     if(status==2){ //map1
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("05"),NULL, NULL);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("80"),NULL, &ba);
         wall1->render();
         wall2->render();
         wall3->render();
@@ -194,17 +198,24 @@ void Game::render()
         SDL_Texture* thp= str_to_texture("HP: "+std::to_string(hp));
         SDL_Texture* tsc= str_to_texture("Score: "+std::to_string(score));
         SDL_Texture* tam= str_to_texture("Ammo: "+std::to_string(ammo)+"/"+std::to_string(totalammo));
-        SDL_Rect hpp{5,5,tWidth,tHeight};
-        SDL_Rect scc{5,30,tWidth,tHeight};
-        SDL_Rect amm{5,55,tWidth,tHeight};
+        SDL_Texture* levelpr= str_to_texture("Level: "+ lvl);
+        SDL_Texture* mapp= str_to_texture("Map 1");
+        SDL_Rect hpp{28,20,140,40};
+        SDL_Rect scc{28,55,160,40};
+        SDL_Rect amm{28,90,210,40};
+        SDL_Rect lv{1070,15,180,40};
+        SDL_Rect mp{1160,45,90,40};
         SDL_RenderCopy(m_pRenderer,thp,NULL,&hpp);
         SDL_RenderCopy(m_pRenderer,tsc,NULL,&scc);
         SDL_RenderCopy(m_pRenderer,tam,NULL,&amm);
+        SDL_RenderCopy(m_pRenderer,levelpr,NULL,&lv);
+        SDL_RenderCopy(m_pRenderer,mapp,NULL,&mp);
         SDL_RenderPresent(m_pRenderer);
     }
     if(status==3){ //map 2
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("06"),NULL, NULL);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("80"),NULL, &ba);
         wall10->render();
         wall11->render();
         wall12->render();
@@ -217,17 +228,24 @@ void Game::render()
         SDL_Texture* thp= str_to_texture("HP: "+std::to_string(hp));
         SDL_Texture* tsc= str_to_texture("Score: "+std::to_string(score));
         SDL_Texture* tam= str_to_texture("Ammo: "+std::to_string(ammo)+"/"+std::to_string(totalammo));
-        SDL_Rect hpp{5,5,tWidth,tHeight};
-        SDL_Rect scc{5,30,tWidth,tHeight};
-        SDL_Rect amm{5,55,tWidth,tHeight};
+        SDL_Texture* levelpr= str_to_texture("Level: "+ lvl);
+        SDL_Texture* mapp= str_to_texture("Map 2");
+        SDL_Rect hpp{28,20,140,40};
+        SDL_Rect scc{28,55,160,40};
+        SDL_Rect amm{28,90,210,40};
+        SDL_Rect lv{1070,15,180,40};
+        SDL_Rect mp{1160,45,90,40};
         SDL_RenderCopy(m_pRenderer,thp,NULL,&hpp);
         SDL_RenderCopy(m_pRenderer,tsc,NULL,&scc);
         SDL_RenderCopy(m_pRenderer,tam,NULL,&amm);
+        SDL_RenderCopy(m_pRenderer,levelpr,NULL,&lv);
+        SDL_RenderCopy(m_pRenderer,mapp,NULL,&mp);
         SDL_RenderPresent(m_pRenderer);
     }
     if(status==4){ //map 3
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("07"),NULL, NULL);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("80"),NULL, &ba);
         wall5->render();
         wall6->render();
         wall7->render();
@@ -241,12 +259,18 @@ void Game::render()
         SDL_Texture* thp= str_to_texture("HP: "+std::to_string(hp));
         SDL_Texture* tsc= str_to_texture("Score: "+std::to_string(score));
         SDL_Texture* tam= str_to_texture("Ammo: "+std::to_string(ammo)+"/"+std::to_string(totalammo));
-        SDL_Rect hpp{5,5,tWidth,tHeight};
-        SDL_Rect scc{5,30,tWidth,tHeight};
-        SDL_Rect amm{5,55,tWidth,tHeight};
+        SDL_Texture* levelpr= str_to_texture("Level: "+ lvl);
+        SDL_Texture* mapp= str_to_texture("Map 1");
+        SDL_Rect hpp{28,20,140,40};
+        SDL_Rect scc{28,55,160,40};
+        SDL_Rect amm{28,90,210,40};
+        SDL_Rect lv{1070,15,180,40};
+        SDL_Rect mp{1160,45,90,40};
         SDL_RenderCopy(m_pRenderer,thp,NULL,&hpp);
         SDL_RenderCopy(m_pRenderer,tsc,NULL,&scc);
         SDL_RenderCopy(m_pRenderer,tam,NULL,&amm);
+        SDL_RenderCopy(m_pRenderer,levelpr,NULL,&lv);
+        SDL_RenderCopy(m_pRenderer,mapp,NULL,&mp);
         SDL_RenderPresent(m_pRenderer);
     }
     if(status==5){ //complete 1 map
@@ -266,6 +290,12 @@ void Game::render()
     if(status==7){ //complete all
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("99"),NULL, NULL);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("55"),NULL, &mn);
+        SDL_RenderPresent(m_pRenderer);
+    }
+    if(status==8){ //choose level
+        SDL_RenderClear(m_pRenderer);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("02"),NULL, NULL);
         SDL_RenderPresent(m_pRenderer);
     }
 }
@@ -278,22 +308,63 @@ void Game::handleEvents()
         if(event.type == SDL_MOUSEBUTTONDOWN){
             if(status==1){
                     if(x1>900&&x1<1100&&y1>390&&y1<465){
-                        status=2;
+                        status=8;
                         Mix_PlayMusic( mplay, -1 );
                     }
                     if(x1>900&&x1<1100&&y1>490&&y1<565){m_bRunning=false;}
             }
+            if(status==8){
+                if(x1>482&&x1<818&&y1>275&&y1<335){
+                    lvl="Easy";
+                    qtocban=2500;
+                    tansuat=400; qhp=100; qdame=5;
+                    status=mapcom;
+                    timebanlt=SDL_GetTicks();
+                }
+                if(x1>482&&x1<818&&y1>360&&y1<420){
+                    lvl="Medium";
+                    qtocban=1600;
+                    tansuat=300; qhp=120; qdame=7;
+                    status=mapcom;
+                    timebanlt=SDL_GetTicks();
+                }
+                if(x1>482&&x1<818&&y1>445&&y1<505){
+                    lvl="Hard";
+                    qtocban=1000;
+                    tansuat=200; qhp=150; qdame=10;
+                    status=mapcom;
+                    timebanlt=SDL_GetTicks();
+                }
+            }
             if(status==5){
                     if(x1>950&&x1<1150&&y1>390&&y1<465){
-                        status=mapcom+1;
+                        status=mapcom;
+                        if(lvl=="Easy"){qtocban-=300;}
+                        if(lvl=="Medium"){qtocban-=250;}
+                        if(lvl=="Hard"){qtocban-=200;}
                         Mix_PlayMusic( mplay, -1 );
+                        timebanlt=SDL_GetTicks();
                     }
+                    if(x1>950&&x1<1150&&y1>490&&y1<565){status=1;}
             }
             if(status==6){
                     if(x1>540&&x1<740&&y1>395&&y1<470){
                         status=1;
-                        hp=100; score=0; ammo=20;
+                        hp=100; score=0; ammo=20; totalammo=40; mapcom=2;
                         Mix_PlayMusic(mmusic,-1);
+                        wall1->setqstatus(0);
+                        wall2->setqstatus(0);
+                        wall3->setqstatus(0);
+                        wall4->setqstatus(0);
+                        wall5->setqstatus(0);
+                        wall6->setqstatus(0);
+                        wall7->setqstatus(0);
+                        wall8->setqstatus(0);
+                        wall9->setqstatus(0);
+                        wall10->setqstatus(0);
+                        wall11->setqstatus(0);
+                        wall12->setqstatus(0);
+                        wall13->setqstatus(0);
                     }
                     if(x1>540&&x1<740&&y1>495&&y1<570){m_bRunning=false;}
             }
@@ -305,6 +376,7 @@ void Game::handleEvents()
                     wall3->shooted(x1,y1);
                     wall4->shooted(x1,y1);
                     Mix_PlayChannel( -1, mshot,0 );
+                    initban=SDL_GetTicks();
                     timebanlt=SDL_GetTicks();
             }
             if(status==3&&statusammo==1&&SDL_GetTicks()-timebanlt>200){
@@ -315,6 +387,7 @@ void Game::handleEvents()
                     wall12->shooted(x1,y1);
                     wall13->shooted(x1,y1);
                     Mix_PlayChannel( -1, mshot,0 );
+                    initban=SDL_GetTicks();
                     timebanlt=SDL_GetTicks();
             }
             if(status==4&&statusammo==1&&SDL_GetTicks()-timebanlt>200){
@@ -326,11 +399,29 @@ void Game::handleEvents()
                     wall8->shooted(x1,y1);
                     wall9->shooted(x1,y1);
                     Mix_PlayChannel( -1, mshot,0 );
+                    initban=SDL_GetTicks();
                     timebanlt=SDL_GetTicks();
+            }
+            if(status==7&&x1>950&&x1<1150&&y1>490&&y1<565){
+                status=1;
+                hp=100; score=0; ammo=20; totalammo=40; mapcom=2;
+                        Mix_PlayMusic(mmusic,-1);
+                        wall1->setqstatus(0);
+                        wall2->setqstatus(0);
+                        wall3->setqstatus(0);
+                        wall4->setqstatus(0);
+                        wall5->setqstatus(0);
+                        wall6->setqstatus(0);
+                        wall7->setqstatus(0);
+                        wall8->setqstatus(0);
+                        wall9->setqstatus(0);
+                        wall10->setqstatus(0);
+                        wall11->setqstatus(0);
+                        wall12->setqstatus(0);
+                        wall13->setqstatus(0);
             }
         }
         if(event.type == SDL_MOUSEBUTTONUP){
-            ss=true;
         }
         if(event.type == SDL_QUIT)
         {
