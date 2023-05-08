@@ -60,6 +60,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     TheTexture::Instance()->load("Assets/bg.png","01",m_pRenderer);
     TheTexture::Instance()->load("Assets/levelchoose.png","02",m_pRenderer);
     TheTexture::Instance()->load("Assets/bang.png","80",m_pRenderer);
+    TheTexture::Instance()->load("Assets/pause.png","81",m_pRenderer);
+    TheTexture::Instance()->load("Assets/pausebtn.png","82",m_pRenderer);
+    TheTexture::Instance()->load("Assets/instruction.png","84",m_pRenderer);
     TheTexture::Instance()->load("Assets/complete.png","99",m_pRenderer);
     TheTexture::Instance()->load("Assets/failed.png","98",m_pRenderer);
     TheTexture::Instance()->load("Assets/stagecom.png","97",m_pRenderer);
@@ -68,6 +71,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     TheTexture::Instance()->load("Assets/replay.png","53",m_pRenderer);
     TheTexture::Instance()->load("Assets/nextstagebtn.png","54",m_pRenderer);
     TheTexture::Instance()->load("Assets/menubtn.png","55",m_pRenderer);
+    TheTexture::Instance()->load("Assets/instrucbtn.png","56",m_pRenderer);
     TheTexture::Instance()->load("Assets/phantom.png","71",m_pRenderer);
     TheTexture::Instance()->load("Assets/phantom2.png","72",m_pRenderer);
     TheTexture::Instance()->load("Assets/crosshair.png","03",m_pRenderer);
@@ -123,10 +127,10 @@ void Game::update()
         sung.y=360+y1/3;
         sung.w=640;
         sung.h=360;
-        tam.x=x1-20;
-        tam.y=y1-20;
-        tam.w=40;
-        tam.h=40;
+        tam.x=x1-15;
+        tam.y=y1-15;
+        tam.w=30;
+        tam.h=30;
     }
     if(status==3){
         wall10->update();
@@ -137,10 +141,10 @@ void Game::update()
         sung.y=360+y1/3;
         sung.w=640;
         sung.h=360;
-        tam.x=x1-20;
-        tam.y=y1-20;
-        tam.w=40;
-        tam.h=40;
+        tam.x=x1-15;
+        tam.y=y1-15;
+        tam.w=30;
+        tam.h=30;
     }
     if(status==4){
         wall5->update();
@@ -152,10 +156,10 @@ void Game::update()
         sung.y=360+y1/3;
         sung.w=640;
         sung.h=360;
-        tam.x=x1-20;
-        tam.y=y1-20;
-        tam.w=40;
-        tam.h=40;
+        tam.x=x1-15;
+        tam.y=y1-15;
+        tam.w=30;
+        tam.h=30;;
     }
     if(ss==false&&SDL_GetTicks()-initban>150){
         ss=true;
@@ -178,6 +182,7 @@ void Game::render()
         SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("01"),NULL,NULL);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("51"),NULL,&st);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("56"),NULL,&in);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("52"),NULL,&qu);
         SDL_RenderPresent(m_pRenderer);
         SDL_RenderClear(m_pRenderer);
@@ -186,6 +191,7 @@ void Game::render()
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("05"),NULL, NULL);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("80"),NULL, &ba);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("82"),NULL, &pbt);
         wall1->render();
         wall2->render();
         wall3->render();
@@ -203,8 +209,8 @@ void Game::render()
         SDL_Rect hpp{28,20,140,40};
         SDL_Rect scc{28,55,160,40};
         SDL_Rect amm{28,90,210,40};
-        SDL_Rect lv{1070,15,180,40};
-        SDL_Rect mp{1160,45,90,40};
+        SDL_Rect lv{20,670,180,40};
+        SDL_Rect mp{20,640,90,40};
         SDL_RenderCopy(m_pRenderer,thp,NULL,&hpp);
         SDL_RenderCopy(m_pRenderer,tsc,NULL,&scc);
         SDL_RenderCopy(m_pRenderer,tam,NULL,&amm);
@@ -216,6 +222,7 @@ void Game::render()
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("06"),NULL, NULL);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("80"),NULL, &ba);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("82"),NULL, &pbt);
         wall10->render();
         wall11->render();
         wall12->render();
@@ -233,8 +240,8 @@ void Game::render()
         SDL_Rect hpp{28,20,140,40};
         SDL_Rect scc{28,55,160,40};
         SDL_Rect amm{28,90,210,40};
-        SDL_Rect lv{1070,15,180,40};
-        SDL_Rect mp{1160,45,90,40};
+        SDL_Rect lv{20,670,180,40};
+        SDL_Rect mp{20,640,90,40};
         SDL_RenderCopy(m_pRenderer,thp,NULL,&hpp);
         SDL_RenderCopy(m_pRenderer,tsc,NULL,&scc);
         SDL_RenderCopy(m_pRenderer,tam,NULL,&amm);
@@ -246,6 +253,7 @@ void Game::render()
         SDL_RenderClear(m_pRenderer);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("07"),NULL, NULL);
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("80"),NULL, &ba);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("82"),NULL, &pbt);
         wall5->render();
         wall6->render();
         wall7->render();
@@ -264,8 +272,8 @@ void Game::render()
         SDL_Rect hpp{28,20,140,40};
         SDL_Rect scc{28,55,160,40};
         SDL_Rect amm{28,90,210,40};
-        SDL_Rect lv{1070,15,180,40};
-        SDL_Rect mp{1160,45,90,40};
+        SDL_Rect lv{20,670,180,40};
+        SDL_Rect mp{20,640,90,40};
         SDL_RenderCopy(m_pRenderer,thp,NULL,&hpp);
         SDL_RenderCopy(m_pRenderer,tsc,NULL,&scc);
         SDL_RenderCopy(m_pRenderer,tam,NULL,&amm);
@@ -298,6 +306,16 @@ void Game::render()
         SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("02"),NULL, NULL);
         SDL_RenderPresent(m_pRenderer);
     }
+    if(status==9){ //pause
+        SDL_RenderClear(m_pRenderer);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("81"),NULL, NULL);
+        SDL_RenderPresent(m_pRenderer);
+    }
+    if(status==10){
+        SDL_RenderClear(m_pRenderer);
+        SDL_RenderCopy(m_pRenderer,TheTexture::Instance()->getTexture("84"),NULL, NULL);
+        SDL_RenderPresent(m_pRenderer);
+    }
 }
 
 void Game::handleEvents()
@@ -311,7 +329,10 @@ void Game::handleEvents()
                         status=8;
                         Mix_PlayMusic( mplay, -1 );
                     }
-                    if(x1>900&&x1<1100&&y1>490&&y1<565){m_bRunning=false;}
+                    if(x1>900&&x1<1100&&y1>480&&y1<555){
+                        status=10;
+                    }
+                    if(x1>900&&x1<1100&&y1>570&&y1<645){m_bRunning=false;}
             }
             if(status==8){
                 if(x1>482&&x1<818&&y1>275&&y1<335){
@@ -323,15 +344,15 @@ void Game::handleEvents()
                 }
                 if(x1>482&&x1<818&&y1>360&&y1<420){
                     lvl="Medium";
-                    qtocban=1600;
-                    tansuat=300; qhp=120; qdame=7;
+                    qtocban=1800;
+                    tansuat=350; qhp=120; qdame=7;
                     status=mapcom;
                     timebanlt=SDL_GetTicks();
                 }
                 if(x1>482&&x1<818&&y1>445&&y1<505){
                     lvl="Hard";
-                    qtocban=1000;
-                    tansuat=200; qhp=150; qdame=10;
+                    qtocban=1400;
+                    tansuat=300; qhp=150; qdame=10;
                     status=mapcom;
                     timebanlt=SDL_GetTicks();
                 }
@@ -345,7 +366,7 @@ void Game::handleEvents()
                         Mix_PlayMusic( mplay, -1 );
                         timebanlt=SDL_GetTicks();
                     }
-                    if(x1>950&&x1<1150&&y1>490&&y1<565){status=1;}
+                    if(x1>950&&x1<1150&&y1>490&&y1<565){status=1; Mix_PlayMusic( mmusic, -1 );}
             }
             if(status==6){
                     if(x1>540&&x1<740&&y1>395&&y1<470){
@@ -368,7 +389,9 @@ void Game::handleEvents()
                     }
                     if(x1>540&&x1<740&&y1>495&&y1<570){m_bRunning=false;}
             }
-            if(status==2&&statusammo==1&&SDL_GetTicks()-timebanlt>200){
+            if(status==2){
+                if(x1>1215&&x1<1260&&y1>15&&y1<60){status=9;}
+                else if(statusammo==1&&SDL_GetTicks()-timebanlt>200){
                     ss=false;
                     trudan();
                     wall1->shooted(x1,y1);
@@ -378,8 +401,11 @@ void Game::handleEvents()
                     Mix_PlayChannel( -1, mshot,0 );
                     initban=SDL_GetTicks();
                     timebanlt=SDL_GetTicks();
+                }
             }
-            if(status==3&&statusammo==1&&SDL_GetTicks()-timebanlt>200){
+            if(status==3){
+                if(x1>1215&&x1<1260&&y1>15&&y1<60){status=9;}
+                else if(statusammo==1&&SDL_GetTicks()-timebanlt>200){
                     ss=false;
                     trudan();
                     wall10->shooted(x1,y1);
@@ -389,8 +415,11 @@ void Game::handleEvents()
                     Mix_PlayChannel( -1, mshot,0 );
                     initban=SDL_GetTicks();
                     timebanlt=SDL_GetTicks();
+                }
             }
-            if(status==4&&statusammo==1&&SDL_GetTicks()-timebanlt>200){
+            if(status==4){
+                if(x1>1215&&x1<1260&&y1>15&&y1<60){status=9;}
+                else if(statusammo==1&&SDL_GetTicks()-timebanlt>200){
                     ss=false;
                     trudan();
                     wall5->shooted(x1,y1);
@@ -401,6 +430,7 @@ void Game::handleEvents()
                     Mix_PlayChannel( -1, mshot,0 );
                     initban=SDL_GetTicks();
                     timebanlt=SDL_GetTicks();
+                }
             }
             if(status==7&&x1>950&&x1<1150&&y1>490&&y1<565){
                 status=1;
@@ -419,6 +449,33 @@ void Game::handleEvents()
                         wall11->setqstatus(0);
                         wall12->setqstatus(0);
                         wall13->setqstatus(0);
+            }
+            if(status==9){
+                if(x1>495&&x1<777&&y1>285&&y1<356){
+                    status=mapcom;
+                }
+                if(x1>495&&x1<777&&y1>381&&y1<452){
+                    status=1;
+                    Mix_PlayMusic( mmusic, -1 );
+                    hp=100; score=0; ammo=20; totalammo=40; mapcom=2;
+                        Mix_PlayMusic(mmusic,-1);
+                        wall1->setqstatus(0);
+                        wall2->setqstatus(0);
+                        wall3->setqstatus(0);
+                        wall4->setqstatus(0);
+                        wall5->setqstatus(0);
+                        wall6->setqstatus(0);
+                        wall7->setqstatus(0);
+                        wall8->setqstatus(0);
+                        wall9->setqstatus(0);
+                        wall10->setqstatus(0);
+                        wall11->setqstatus(0);
+                        wall12->setqstatus(0);
+                        wall13->setqstatus(0);
+                }
+            }
+            if(status==10&&x1>1105&&x1<1155&&y1>74&&y1<124){
+                status=1;
             }
         }
         if(event.type == SDL_MOUSEBUTTONUP){

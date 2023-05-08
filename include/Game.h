@@ -28,7 +28,7 @@ class Game
         bool running(){ return m_bRunning;}
         void truhp(int x){
             hp-=x;
-            if(hp==0){status=6; Mix_PlayMusic( mfail, -1 );}
+            if(hp<=0){status=6; Mix_PlayMusic( mfail, -1 );}
         }
         void tangdiem(int sc){
             score+=sc;
@@ -84,7 +84,7 @@ class Game
         int status=1, qtocban, tansuat, qhp, qdame, totalammo=40, mapcom=2;
         int tWidth, tHeight;
         int hp=100, score=0, ammo=20, statusammo=1;
-        SDL_Rect hpp,scc,amm, st{900,390,200,75}, qu{900,490,200,75}, re{540,395,200,75}, qu2{540,495,200,75}, ne{950,390,200,75}, mn{950,490,200,75}, ba{0,0,320,150};
+        SDL_Rect hpp,scc,amm, st{900,390,200,75}, in{900,480,200,75}, qu{900,570,200,75}, re{540,395,200,75}, qu2{540,495,200,75}, ne{950,390,200,75}, mn{950,490,200,75}, ba{0,0,320,150}, pbt{1215,15,45,45};
         SDL_Rect sung,tam;
         double timee, timebanlt=0, initban=0;
         std::string lvl;

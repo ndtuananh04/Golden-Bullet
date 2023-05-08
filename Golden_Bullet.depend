@@ -3,7 +3,7 @@
 	<SDL.h>
 	"Game.h"
 
-1683466510 e:\gameee\golden_bullet\include\game.h
+1683512107 e:\gameee\golden_bullet\include\game.h
 	"SDL.h"
 	<vector>
 	"Texture.h"
@@ -34,7 +34,7 @@
 1680736320 e:\gameee\golden_bullet\include\button.h
 	"Texture.h"
 
-1683466537 source:e:\gameee\golden_bullet\src\game.cpp
+1683510790 source:e:\gameee\golden_bullet\src\game.cpp
 	"Game.h"
 	<iostream>
 	<cstdlib>
