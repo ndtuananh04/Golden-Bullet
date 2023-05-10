@@ -20,6 +20,12 @@ class Texture
 
     bool load(std::string fileName,std::string id, SDL_Renderer* pRenderer);
        SDL_Texture* getTexture(std::string id){ return m_textureMap[id];}
+    void clearer(){
+        for(std::map<std::string, SDL_Texture*>::iterator itr = m_textureMap.begin(); itr != m_textureMap.end(); itr++)
+        {
+            delete (itr->second);
+        }
+    }
     private:
     static Texture* s_pInstance;
     Texture(){};

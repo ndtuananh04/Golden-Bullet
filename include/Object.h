@@ -21,12 +21,13 @@ class Object
         }
         ~Object(){}
         void update();
-        void check(int m, int n);
         void render();
         void shooted(int m, int n);
+        int getqstatus(){return remain;}
         void setqstatus(int r){
             remain=r;
         }
+        void resettimeb(){timeb=SDL_GetTicks();}
     private:
         float x,y,w,h;
         int remain;
